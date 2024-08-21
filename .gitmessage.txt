@@ -1,0 +1,5 @@
+# [PAGE ROUTER] 
+# [APP ROUTER] 
+
+# 커밋 메세지 적용 방법
+# git config commit.template .gitmessage.txt
