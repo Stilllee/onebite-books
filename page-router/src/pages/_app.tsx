@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 
 import type { AppProps } from "next/app";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -11,12 +12,18 @@ export default function App({ Component, pageProps }: AppProps) {
     router.push("/test");
   };
 
+  useEffect(() => {
+    router.prefetch("/test");
+  }, []);
+
   return (
     <>
       <header>
         <Link href={"/"}>index</Link>
         &nbsp;
-        <Link href={"/search"}>search</Link>
+        <Link href={"/search"} prefetch={false}>
+          search
+        </Link>
         &nbsp;
         <Link href={"/book/1"}>book/1</Link>
         <div>
