@@ -7,7 +7,6 @@ import fetchRandomBooks from "@/lib/fetch-random-books";
 import styles from "./index.module.css";
 
 export const getStaticProps = async () => {
-  console.log("인덱스 페이지");
   // api 호출을 동시에 하기 위해 Promise.all을 사용
   const [allBooks, recoBooks] = await Promise.all([
     fetchBooks(),
@@ -19,6 +18,7 @@ export const getStaticProps = async () => {
       allBooks,
       recoBooks,
     },
+    revalidate: 3,
   };
 };
 
