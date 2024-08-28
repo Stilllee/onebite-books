@@ -1,6 +1,5 @@
 import { BookData } from "@/types";
 import BookItem from "@/components/book-item";
-import books from "@/mock/books.json";
 
 export default async function Page({
   searchParams,
