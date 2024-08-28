@@ -1,16 +1,26 @@
-import books from "@/mock/books.json";
+import { BookData } from "@/types";
 import BookItem from "@/components/book-item";
+import books from "@/mock/books.json";
 
-export default function Page({
+export default async function Page({
   searchParams,
 }: {
   searchParams: {
     q?: string;
   };
 }) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${searchParams.q}`
+  );
+  if (!response.ok) {
+    return <div>오류가 발생했습니다.</div>;
+  }
+
+  const searchBooks: BookData[] = await response.json();
+
   return (
     <div>
-      {books.map((book) => (
+      {searchBooks.map((book) => (
         <BookItem key={book.id} {...book} />
       ))}
     </div>
