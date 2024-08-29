@@ -8,8 +8,11 @@ export default async function Page({
     q?: string;
   };
 }) {
+  // 검색 결과를 동적으로 가져오는 동적 페이지이기 때문에 풀 페이지 캐싱은 불가능
+  // 데이터 캐시를 활용한 최적화만 가능
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${searchParams.q}`
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${searchParams.q}`,
+    { cache: "force-cache" }
   );
   if (!response.ok) {
     return <div>오류가 발생했습니다.</div>;
