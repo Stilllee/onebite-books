@@ -1,5 +1,6 @@
 import { BookData } from "@/types";
 import BookItem from "@/components/book-item";
+import BookListSkeleton from "@/components/skeleton/book-list.skeleton";
 import { Suspense } from "react";
 import { delay } from "@/util/delay";
 
@@ -35,7 +36,10 @@ export default function Page({
   };
 }) {
   return (
-    <Suspense key={searchParams.q || ""} fallback={<div>로딩중...</div>}>
+    <Suspense
+      key={searchParams.q || ""}
+      fallback={<BookListSkeleton count={3} />}
+    >
       <SearchResult q={searchParams.q || ""} />
     </Suspense>
   );
