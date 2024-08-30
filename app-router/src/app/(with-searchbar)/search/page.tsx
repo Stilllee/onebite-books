@@ -1,5 +1,6 @@
 import { BookData } from "@/types";
 import BookItem from "@/components/book-item";
+import { delay } from "@/util/delay";
 
 export default async function Page({
   searchParams,
@@ -8,7 +9,9 @@ export default async function Page({
     q?: string;
   };
 }) {
-  // 검색 결과를 동적으로 가져오는 동적 페이지이기 때문에 풀 페이지 캐싱은 불가능
+  await delay(1500);
+
+  // 검색 결과를 동적으로 가져오는 동적 페이지이기 때문에 풀 라우트 캐싱은 불가능
   // 데이터 캐시를 활용한 최적화만 가능
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${searchParams.q}`,
