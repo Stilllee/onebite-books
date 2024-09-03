@@ -1,6 +1,6 @@
 import { BookData } from "@/types";
 import { notFound } from "next/navigation";
-import style from "./page.module.css";
+import styles from "./page.module.css";
 
 // 만약, 1, 2, 3을 제외한 나머지 숫자에 대해 전부 404 페이지를 보여주고 싶다면
 // (4, 5, 6, ... 등 데이터가 존재해도) 아래와 같이 dynamicParams를 false로 설정하면 됨
@@ -14,13 +14,9 @@ export function generateStaticParams() {
   return [{ id: "1" }, { id: "2" }, { id: "3" }];
 }
 
-export default async function Page({
-  params,
-}: {
-  params: { id: string | string[] };
-}) {
+async function BookDetail({ bookId }: { bookId: string }) {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${params.id}`
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${bookId}`
   );
   if (!response.ok) {
     if (response.status === 404) {
@@ -34,19 +30,49 @@ export default async function Page({
   const { title, subTitle, description, author, publisher, coverImgUrl } = book;
 
   return (
-    <div className={style.container}>
+    <section>
       <div
-        className={style.cover_img_container}
+        className={styles.cover_img_container}
         style={{ backgroundImage: `url('${coverImgUrl}')` }}
       >
         <img src={coverImgUrl} />
       </div>
-      <div className={style.title}>{title}</div>
-      <div className={style.subTitle}>{subTitle}</div>
-      <div className={style.author}>
+      <div className={styles.title}>{title}</div>
+      <div className={styles.subTitle}>{subTitle}</div>
+      <div className={styles.author}>
         {author} | {publisher}
       </div>
-      <div className={style.description}>{description}</div>
+      <div className={styles.description}>{description}</div>
+    </section>
+  );
+}
+
+function ReviewEditor() {
+  async function createReviewAction(formData: FormData) {
+    "use server";
+
+    const content = formData.get("content")?.toString();
+    const author = formData.get("author")?.toString();
+
+    console.log(content, author);
+  }
+
+  return (
+    <section>
+      <form action={createReviewAction}>
+        <input name="content" placeholder="리뷰 내용" />
+        <input name="author" placeholder="작성자" />
+        <button type="submit">작성하기</button>
+      </form>
+    </section>
+  );
+}
+
+export default function Page({ params }: { params: { id: string } }) {
+  return (
+    <div className={styles.container}>
+      <BookDetail bookId={params.id} />
+      <ReviewEditor />
     </div>
   );
 }
