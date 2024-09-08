@@ -5,7 +5,7 @@ export default function ReviewEditor({ bookId }: { bookId: string }) {
   return (
     <section>
       <form className={styles.form_container} action={createReviewAction}>
-        <input type="bookId" value={bookId} hidden />
+        <input name="bookId" value={bookId} hidden readOnly />
         <textarea
           required
           autoComplete="off"
