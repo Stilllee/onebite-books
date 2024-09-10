@@ -2,7 +2,6 @@ import { BookData, ReviewData } from "@/types";
 
 import ReviewEditor from "@/components/review-editor";
 import ReviewItem from "@/components/review-item";
-import { createReviewAction } from "@/actions/create-review.action";
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 
