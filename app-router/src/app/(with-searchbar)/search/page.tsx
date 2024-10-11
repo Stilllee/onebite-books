@@ -2,11 +2,8 @@ import { BookData } from "@/types";
 import BookItem from "@/components/book-item";
 import BookListSkeleton from "@/components/skeleton/book-list.skeleton";
 import { Suspense } from "react";
-import { delay } from "@/util/delay";
 
 async function SearchResult({ q }: { q: string }) {
-  await delay(1500);
-
   // 검색 결과를 동적으로 가져오는 동적 페이지이기 때문에 풀 라우트 캐싱은 불가능
   // 데이터 캐시를 활용한 최적화만 가능
   const response = await fetch(
