@@ -1,5 +1,7 @@
 import { BookData, ReviewData } from "@/types";
 
+import Image from "next/image";
+import { Metadata } from "next";
 import ReviewEditor from "@/components/review-editor";
 import ReviewItem from "@/components/review-item";
 import { notFound } from "next/navigation";
@@ -38,7 +40,12 @@ async function BookDetail({ bookId }: { bookId: string }) {
         className={styles.cover_img_container}
         style={{ backgroundImage: `url('${coverImgUrl}')` }}
       >
-        <img src={coverImgUrl} />
+        <Image
+          src={coverImgUrl}
+          width={80}
+          height={105}
+          alt={`도서 ${title}의 표지 이미지`}
+        />
       </div>
       <div className={styles.title}>{title}</div>
       <div className={styles.subTitle}>{subTitle}</div>
@@ -72,7 +79,36 @@ async function ReviewList({ bookId }: { bookId: string }) {
   );
 }
 
-export default function Page({ params }: { params: { id: string } }) {
+type PropsType = {
+  params: {
+    id: string;
+  };
+};
+
+export async function generateMetadata({
+  params,
+}: PropsType): Promise<Metadata | null> {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${params.id}`
+  );
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  const book: BookData = await response.json();
+
+  return {
+    title: `${book.title} - 한입북스`,
+    description: `${book.description}`,
+    openGraph: {
+      title: `${book.title} - 한입북스`,
+      description: `${book.description}`,
+      images: [book.coverImgUrl],
+    },
+  };
+}
+
+export default function Page({ params }: PropsType) {
   return (
     <div className={styles.container}>
       <BookDetail bookId={params.id} />
